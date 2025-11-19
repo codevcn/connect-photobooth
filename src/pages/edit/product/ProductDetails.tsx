@@ -1,0 +1,97 @@
+import { VietnamFlag } from '@/components/custom/icons/VietnamFlag'
+import { TBaseProduct, TClientProductVariant } from '@/utils/types/global'
+
+type TProductDetailsProps = {
+  pickedProduct: TBaseProduct
+  pickedVariant: TClientProductVariant
+}
+
+export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetailsProps) => {
+  return (
+    <div className="w-full">
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">{pickedProduct.name}</h1>
+      </div>
+
+      <div className="flex items-center space-x-3">
+        <span className="text-3xl font-bold text-orange-600">
+          <span>{pickedVariant.priceAmountOneSide}</span>
+          <span>{pickedVariant.currency}</span>
+        </span>
+      </div>
+
+      <div className="bg-orange-50 border border-orange-100 rounded-lg space-y-2 p-4 my-4">
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-600">Người bán</span>
+          <span className="font-semibold text-gray-900">Photoism</span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-gray-800 font-bold">Chăm sóc khách hàng</span>
+          <a
+            href="tel:0123456789"
+            className="font-semibold text-pink-cl hover:text-pink-hover-cl transition-colors"
+          >
+            0987 654 321
+          </a>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 text-sm">
+        {pickedVariant.stock > 0 ? (
+          <>
+            <span className="flex items-center gap-1 font-medium text-orange-600">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Còn hàng
+            </span>
+            <span className="text-gray-500">
+              • <span>{pickedVariant.stock}</span> sản phẩm
+            </span>
+          </>
+        ) : (
+          <span className="flex items-center gap-1 font-medium text-red-600">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              />
+            </svg>
+            Hết hàng
+          </span>
+        )}
+      </div>
+
+      <div className="space-y-3 text-sm mt-2">
+        <div className="flex items-center">
+          <div className="mr-2 text-lg">
+            <VietnamFlag />
+          </div>
+          <div>
+            <span className="text-gray-600">Vận chuyển đến</span>
+            <a href="#" className="text-blue-600 font-medium hover:underline">
+              Vietnam
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <label className="block text-sm font-bold text-slate-900 mb-1">Size</label>
+        <div className="flex space-x-2">
+          <button className="px-6 py-2 border-2 border-orange-500 text-orange-500 font-bold rounded bg-white hover:bg-orange-50 transition-colors">
+            11OZ
+          </button>
+          <button className="px-6 py-2 border border-gray-300 text-slate-700 font-medium rounded bg-white hover:border-gray-400 transition-colors">
+            15OZ
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
