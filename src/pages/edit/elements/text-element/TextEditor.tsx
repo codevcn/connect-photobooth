@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import { useEditedElementStore } from '@/stores/element/element.store'
+import { getInitialContants } from '@/utils/contants'
+import { useState } from 'react'
 
 type EditorModalProps = {
   onClose: () => void
@@ -7,9 +9,22 @@ type EditorModalProps = {
 const EditorModal = ({ onClose }: EditorModalProps) => {
   const [text, setText] = useState<string>('')
 
-  const handleAdd = () => {
+  const handleAddText = () => {
     if (text.trim()) {
-      // onAddText(text.trim())
+      useEditedElementStore.getState().addTextElement({
+        id: crypto.randomUUID(),
+        content: text,
+        angle: getInitialContants<number>('ELEMENT_ROTATION'),
+        position: {
+          x: getInitialContants<number>('ELEMENT_X'),
+          y: getInitialContants<number>('ELEMENT_Y'),
+        },
+        fontSize: getInitialContants<number>('ELEMENT_TEXT_FONT_SIZE'),
+        textColor: getInitialContants<string>('ELEMENT_TEXT_COLOR'),
+        fontFamily: getInitialContants<string>('ELEMENT_TEXT_FONT_FAMILY'),
+        fontWeight: getInitialContants<number>('ELEMENT_TEXT_FONT_WEIGHT'),
+        zindex: getInitialContants<number>('ELEMENT_ZINDEX'),
+      })
       setText('')
       onClose()
     }
@@ -22,7 +37,7 @@ const EditorModal = ({ onClose }: EditorModalProps) => {
   const catchEnterKey = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-      handleAdd()
+      handleAddText()
     }
   }
 
@@ -62,7 +77,7 @@ const EditorModal = ({ onClose }: EditorModalProps) => {
           />
 
           <button
-            onClick={handleAdd}
+            onClick={handleAddText}
             disabled={!text.trim()}
             className="text-base sm:text-lg w-full bg-primary active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-xl shadow-lg touch-target flex items-center justify-center gap-2 transition"
           >
@@ -98,7 +113,7 @@ export const TextEditor = () => {
         <h3 className="mb-1 font-bold text-gray-800">Thêm văn bản</h3>
         <button
           onClick={() => setShowEditorModal(true)}
-          className="flex flex-col items-center gap-2 cursor-pointer mobile-touch p-3 bg-white rounded-md active:bg-light-orange-cl touch-target transition"
+          className="flex flex-col items-center -rotate-6 gap-2 cursor-pointer mobile-touch p-3 bg-white rounded-md active:bg-light-orange-cl touch-target transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -40,26 +40,24 @@ export const ElementInteraction = () => {
 
   return (
     <div ref={elementInteractionContainerRef} className="mt-6">
-      <h3 className="mb-1 font-bold text-gray-800">Tùy chỉnh khác</h3>
-      <div>
-        <div className="bg-white rounded smd:h-[41.5px] mt-2 relative">
-          {elementId &&
-            (elementType === 'text' ? (
-              //   <TextElementMenu elementId={elementId} onClose={cancelSelectingElement} />
-              // ) : elementType === 'sticker' ? (
-              //   <StickerElementMenu elementId={elementId} onClose={cancelSelectingElement} />
-              <></>
-            ) : (
-              elementType === 'template-frame' &&
-              elementURL && (
-                <TemplateFrameMenu
-                  frameId={elementId}
-                  onClose={cancelSelectingElement}
-                  printedImageURL={elementURL}
-                />
-              )
-            ))}
-        </div>
+      <h3 className="font-bold text-gray-800">Tùy chỉnh khác</h3>
+      <div className="bg-white rounded smd:h-[41.5px] mt-2 relative">
+        {elementId &&
+          (elementType === 'text' ? (
+            //   <TextElementMenu elementId={elementId} onClose={cancelSelectingElement} />
+            // ) : elementType === 'sticker' ? (
+            //   <StickerElementMenu elementId={elementId} onClose={cancelSelectingElement} />
+            <></>
+          ) : (
+            elementType === 'template-frame' &&
+            elementURL && (
+              <TemplateFrameMenu
+                frameId={elementId}
+                onClose={cancelSelectingElement}
+                printedImageURL={elementURL}
+              />
+            )
+          ))}
       </div>
     </div>
   )

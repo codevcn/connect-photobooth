@@ -1,7 +1,7 @@
 import { useProductUIDataStore } from '@/stores/ui/product-ui-data.store'
 import { EInternalEvents, eventEmitter } from '@/utils/events'
 import { useNavigate } from 'react-router-dom'
-import { BothPrintSidesPreview } from './MockupPreview'
+import { MockupPreview } from './MockupPreview'
 import { useState } from 'react'
 
 export const Actions = () => {
@@ -72,10 +72,7 @@ export const Actions = () => {
       </div>
 
       {showMockupPreview && pickedSurface && (
-        <BothPrintSidesPreview
-          onClose={() => setShowMockupPreview(false)}
-          pickedPrintSurface={pickedSurface}
-        />
+        <MockupPreview onClose={() => setShowMockupPreview(false)} />
       )}
     </div>
   )

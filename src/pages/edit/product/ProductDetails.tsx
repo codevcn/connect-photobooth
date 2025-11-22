@@ -5,6 +5,71 @@ import { formatNumberWithCommas, friendlyCurrency } from '@/utils/helpers'
 import { TBaseProduct, TClientProductVariant, TProductColor } from '@/utils/types/global'
 import { useMemo, useState } from 'react'
 
+type TProductImagePreviewProps = {
+  imageURL: string
+  onClose: () => void
+}
+
+const ProductImagePreview = ({ imageURL, onClose }: TProductImagePreviewProps) => {
+  return (
+    <Modal
+      onClose={onClose}
+      title="Ảnh sản phẩm"
+      classNames={{
+        contentContainer: 'p-0 overflow-hidden w-fit',
+        rootModal: 'z-99',
+        titleContainer: 'py-1',
+      }}
+    >
+      <div className="bg-white w-fit flex justify-center relative overflow-hidden">
+        <img src={imageURL} alt="Ảnh sản phẩm" className="h-[calc(90vh-48px)] object-contain" />
+      </div>
+    </Modal>
+  )
+}
+
+type TSizeChartPreviewProps = {
+  setShowSizeChart: (show: boolean) => void
+}
+
+const SizeChartPreview = ({ setShowSizeChart }: TSizeChartPreviewProps) => {
+  return (
+    <Modal
+      onClose={() => setShowSizeChart(false)}
+      title="Bảng kích thước"
+      classNames={{
+        contentContainer: 'p-0 overflow-y-auto',
+        titleContainer: 'bg-secondary-cl text-white',
+        board: 'max-w-2xl',
+      }}
+    >
+      <div className="bg-white w-full rounded-xl shadow-2xl border border-gray-200 relative">
+        <div className="p-4">
+          <div className="border border-slate-300 rounded-2xl p-6">
+            <p className="text-center text-sm text-gray-800 font-medium mb-8">
+              Có thể chênh lệch ±1.5 inch do đo thủ công và quy trình sản xuất
+            </p>
+
+            <div className="flex justify-center items-end gap-4 h-64 mb-8 relative">
+              <div className="text-center opacity-50 w-full h-full flex items-center justify-center bg-yellow-50 rounded-lg border border-dashed border-orange-300 text-orange-400">
+                [Khu vực dành cho hình ảnh Silhouettes: Phụ nữ, Nam, Trẻ em, Em bé]
+              </div>
+            </div>
+
+            <div className="space-y-4 text-sm text-gray-800 font-medium text-center">
+              <p className="pb-4 border-b border-gray-200">
+                Vòng ngực - Đo ngang ngực cách nách 1 inch khi đặt áo nằm phẳng.
+              </p>
+              <p className="pb-4 border-b border-gray-200">Vòng ngực nữ - Đo cách nách 1 inch.</p>
+              <p>Chiều dài áo - Đo từ điểm cao nhất của vai phía sau.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  )
+}
+
 type TProductDetailsProps = {
   pickedProduct: TBaseProduct
   pickedVariant: TClientProductVariant
@@ -12,6 +77,7 @@ type TProductDetailsProps = {
 
 export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetailsProps) => {
   const [showSizeChart, setShowSizeChart] = useState(false)
+  const [selectedImageToPreview, setSelectedImageToPreview] = useState<string>()
   const { size: selectedSize, color: selectedColor } = pickedVariant
   const handlePickColor = useProductUIDataStore((s) => s.handlePickColor)
   const handlePickSize = useProductUIDataStore((s) => s.handlePickSize)
@@ -111,12 +177,19 @@ export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetails
           <div className="grid grid-cols-3 gap-2 w-full mt-2">
             {pickedProduct.detailImages.length > 0 ? (
               pickedProduct.detailImages.map((imgURL) => (
-                <div key={imgURL} className={`bg-white`}>
+                <div
+                  key={imgURL}
+                  className="bg-white mobile-touch cursor-pointer"
+                  onClick={() => setSelectedImageToPreview(imgURL)}
+                >
                   <img src={imgURL} alt="Danh mục ảnh sản phẩm" />
                 </div>
               ))
             ) : (
-              <div className="bg-white">
+              <div
+                onClick={() => setSelectedImageToPreview(pickedProduct.url)}
+                className="bg-white mobile-touch cursor-pointer"
+              >
                 <img src={pickedProduct.url} alt="Ảnh đại diện sản phẩm" />
               </div>
             )}
@@ -213,42 +286,12 @@ export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetails
         </div>
       </div>
 
-      {showSizeChart && (
-        <Modal
-          onClose={() => setShowSizeChart(false)}
-          title="Bảng kích thước"
-          classNames={{
-            contentContainer: 'p-0 overflow-y-auto',
-            titleContainer: 'bg-secondary-cl text-white',
-            board: 'max-w-2xl',
-          }}
-        >
-          <div className="bg-white w-full rounded-xl shadow-2xl border border-gray-200 relative">
-            <div className="p-4">
-              <div className="border border-slate-300 rounded-2xl p-6">
-                <p className="text-center text-sm text-gray-800 font-medium mb-8">
-                  Có thể chênh lệch ±1.5 inch do đo thủ công và quy trình sản xuất
-                </p>
-
-                <div className="flex justify-center items-end gap-4 h-64 mb-8 relative">
-                  <div className="text-center opacity-50 w-full h-full flex items-center justify-center bg-yellow-50 rounded-lg border border-dashed border-orange-300 text-orange-400">
-                    [Khu vực dành cho hình ảnh Silhouettes: Phụ nữ, Nam, Trẻ em, Em bé]
-                  </div>
-                </div>
-
-                <div className="space-y-4 text-sm text-gray-800 font-medium text-center">
-                  <p className="pb-4 border-b border-gray-200">
-                    Vòng ngực - Đo ngang ngực cách nách 1 inch khi đặt áo nằm phẳng.
-                  </p>
-                  <p className="pb-4 border-b border-gray-200">
-                    Vòng ngực nữ - Đo cách nách 1 inch.
-                  </p>
-                  <p>Chiều dài áo - Đo từ điểm cao nhất của vai phía sau.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal>
+      {showSizeChart && <SizeChartPreview setShowSizeChart={setShowSizeChart} />}
+      {selectedImageToPreview && (
+        <ProductImagePreview
+          imageURL={selectedImageToPreview}
+          onClose={() => setSelectedImageToPreview(undefined)}
+        />
       )}
     </div>
   )

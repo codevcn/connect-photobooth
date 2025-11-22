@@ -7,9 +7,6 @@ import {
 } from '@/utils/types/global'
 import { getInitialContants } from '@/utils/contants'
 import { create } from 'zustand'
-import { assignFrameSizeByTemplateType } from '@/configs/print-template/templates-helpers'
-import { matchPrintedImgAndAllowSquareMatchToShapeSize } from '@/pages/edit/customize/template/TemplateFrame'
-import { toast } from 'react-toastify'
 import { subscribeWithSelector } from 'zustand/middleware'
 import { hardCodedPrintTemplates } from '@/configs/print-template/templates-data'
 
@@ -30,7 +27,7 @@ type TTemplateStore = {
   hideShowTemplatePicker: (show: boolean) => void
   pickFrame: (frame: TTemplateFrame | undefined) => void
   addImageToFrame: (printedImage: TPrintedImage, printAreaSize: TSizeInfo, frameId?: string) => void
-  updateFrameImageURL: (newURL: string, frameId: string, idOfURLImage?: string) => void
+  updateFrameImageURL: (newURL: string, frameId: string, newIdForImageOfURL?: string) => void
   removeFrameImage: (frameId: string) => void
   updatePickedTemplate: (template: TPrintTemplate) => void
 }
@@ -162,7 +159,7 @@ export const useTemplateStore = create(
       set({ allTemplates: templates })
     },
 
-    updateFrameImageURL: (newURL, frameId, idOfURLImage) => {
+    updateFrameImageURL: (newURL, frameId, newIdForImageOfURL) => {
       const { allTemplates } = get()
       const templates = [...allTemplates]
 
@@ -171,8 +168,8 @@ export const useTemplateStore = create(
         if (foundFrame) {
           if (foundFrame.placedImage) {
             foundFrame.placedImage.imgURL = newURL
-            if (idOfURLImage) {
-              foundFrame.placedImage.id = idOfURLImage
+            if (newIdForImageOfURL) {
+              foundFrame.placedImage.id = newIdForImageOfURL
             }
           }
           break

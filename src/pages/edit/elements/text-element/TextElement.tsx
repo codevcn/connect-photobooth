@@ -1,9 +1,6 @@
 import { TTextVisualState } from '@/utils/types/global'
-import { X, RotateCw, Scaling } from 'lucide-react'
 import { useEffect, useRef } from 'react'
-import { eventEmitter } from '@/utils/events'
-import { EInternalEvents } from '@/utils/enums'
-import { useElementLayerContext } from '@/context/global-context'
+import { EInternalEvents, eventEmitter } from '@/utils/events'
 import { useTextElementControl } from '@/hooks/element/use-text-element-control'
 import { typeToObject } from '@/utils/helpers'
 
@@ -12,23 +9,22 @@ const MIN_TEXT_FONT_SIZE: number = 5
 
 interface TextElementProps {
   element: TTextVisualState
-  onRemoveElement: (id: string) => void
-  selectedElementId: string | null
-  onUpdateSelectedElementId: (id: string | null) => void
-  canvasAreaRef: React.MutableRefObject<HTMLDivElement | null>
+  canvasAreaRef: React.RefObject<HTMLDivElement | null>
   mountType: 'new' | 'from-saved'
+  isSelected: boolean
+  selectElement: (elementId: string, element: HTMLElement, elementType: 'text') => void
+  removeTextElement: (textElementId: string) => void
 }
 
 export const TextElement = ({
   element,
-  onRemoveElement,
-  onUpdateSelectedElementId,
-  selectedElementId,
   canvasAreaRef,
   mountType,
+  isSelected,
+  selectElement,
+  removeTextElement,
 }: TextElementProps) => {
   const { id } = element
-  const isSelected = selectedElementId === id
   const {
     forPinch: { ref: refForPinch },
     forRotate: { ref: refForRotate, rotateButtonRef },
@@ -49,11 +45,13 @@ export const TextElement = ({
     fontWeight: element.fontWeight,
   })
   const rootRef = useRef<HTMLElement | null>(null)
-  const { addToElementLayers } = useElementLayerContext()
+  // const { addToElementLayers } = useElementLayerContext()
 
   const pickElement = () => {
-    eventEmitter.emit(EInternalEvents.PICK_ELEMENT, rootRef.current, 'text')
-    onUpdateSelectedElementId(id)
+    const root = rootRef.current
+    if (!root) return
+    eventEmitter.emit(EInternalEvents.PICK_ELEMENT, element.id, root, 'text')
+    selectElement(id, root, 'text')
   }
 
   const listenSubmitEleProps = (
@@ -115,7 +113,7 @@ export const TextElement = ({
   }
 
   const handleAddElementLayer = () => {
-    addToElementLayers({ elementId: id, index: zindex })
+    // addToElementLayers({ elementId: id, index: zindex })
   }
 
   useEffect(() => {
@@ -124,9 +122,9 @@ export const TextElement = ({
   }, [])
 
   useEffect(() => {
-    if (selectedElementId !== id) return
+    if (!isSelected) return
     eventEmitter.emit(EInternalEvents.SYNC_ELEMENT_PROPS, id, 'text')
-  }, [fontSize, angle, position, selectedElementId, id])
+  }, [fontSize, angle, position, isSelected, id])
 
   useEffect(() => {
     eventEmitter.on(EInternalEvents.SUBMIT_TEXT_ELE_PROPS, listenSubmitEleProps)
@@ -152,7 +150,7 @@ export const TextElement = ({
       }}
       className={`${
         isSelected ? 'shadow-[0_0_0_2px_#d91670]' : ''
-      } NAME-root-element NAME-element-type-text absolute h-fit w-fit touch-none`}
+      } NAME-root-element NAME-element-type-text absolute h-fit w-fit touch-none z-6`}
       onClick={pickElement}
       data-visual-state={JSON.stringify(
         typeToObject<TTextVisualState>({
@@ -179,7 +177,7 @@ export const TextElement = ({
               fontFamily,
               fontWeight,
             }}
-            className="NAME-displayed-text-content font-bold whitespace-nowrap select-none"
+            className="NAME-displayed-text-content font-bold whitespace-nowrap select-none leading-none"
           >
             {content}
           </p>
@@ -187,7 +185,7 @@ export const TextElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-rotate-box absolute -top-7 -left-7 z-[999]`}
+          } NAME-rotate-box absolute -top-7 -left-7 z-999`}
         >
           <button
             ref={rotateButtonRef}
@@ -201,7 +199,7 @@ export const TextElement = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-rotate-cw-icon lucide-rotate-cw h-[18px] w-[18px] md:w-[20px] md:h-[20px]"
+              className="lucide lucide-rotate-cw-icon lucide-rotate-cw h-[18px] w-[18px] md:w-5 md:h-5"
             >
               <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
               <path d="M21 3v5h-5" />
@@ -211,7 +209,7 @@ export const TextElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-remove-box absolute -bottom-7 -right-7 z-[999]`}
+          } NAME-remove-box absolute -bottom-7 -right-7 z-999`}
         >
           <button
             ref={zoomButtonRef}
@@ -228,7 +226,7 @@ export const TextElement = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-scaling-icon lucide-scaling h-[18px] w-[18px] md:w-[20px] md:h-[20px]"
+              className="lucide lucide-scaling-icon lucide-scaling h-[18px] w-[18px] md:w-5 md:h-5"
             >
               <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
               <path d="M14 15H9v-5" />
@@ -240,10 +238,10 @@ export const TextElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-remove-box absolute -top-7 -right-7 z-[999]`}
+          } NAME-remove-box absolute -top-7 -right-7 z-999`}
         >
           <button
-            onClick={() => onRemoveElement(id)}
+            onClick={() => removeTextElement(id)}
             className="bg-red-600 text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg
@@ -256,7 +254,7 @@ export const TextElement = ({
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="lucide lucide-x-icon lucide-x h-[18px] w-[18px] md:w-[20px] md:h-[20px]"
+              className="lucide lucide-x-icon lucide-x h-[18px] w-[18px] md:w-5 md:h-5"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />

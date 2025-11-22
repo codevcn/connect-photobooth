@@ -1,4 +1,4 @@
-import { TElementType, TStickerVisualState } from '@/utils/types/global'
+import { TElementType, TStickerVisualState, TTextVisualState } from '@/utils/types/global'
 import { create } from 'zustand'
 
 type TUseElementStore = {
@@ -9,6 +9,7 @@ type TUseElementStore = {
     elementURL?: string
   } | null
   stickerElements: TStickerVisualState[]
+  textElements: TTextVisualState[]
 
   // Actions
   selectElement: (
@@ -20,21 +21,29 @@ type TUseElementStore = {
   cancelSelectingElement: () => void
   addStickerElement: (sticker: TStickerVisualState) => void
   removeStickerElement: (stickerId: string) => void
+  addTextElement: (textElement: TTextVisualState) => void
+  removeTextElement: (textElementId: string) => void
 }
 
 export const useEditedElementStore = create<TUseElementStore>((set, get) => ({
   selectedElement: null,
   stickerElements: [],
+  textElements: [],
 
+  addTextElement: (textElement) => {
+    const { textElements } = get()
+    set({ textElements: [...textElements, textElement] })
+  },
+  removeTextElement: (textElementId) => {
+    const { textElements } = get()
+    set({
+      textElements: textElements.filter((textElement) => textElement.id !== textElementId),
+      selectedElement: null,
+    })
+  },
   addStickerElement: (sticker) => {
     const { stickerElements } = get()
     set({ stickerElements: [...stickerElements, sticker] })
-  },
-  selectElement: (elementId, element, elementType, elementURL) => {
-    set({ selectedElement: { element, elementType, elementId, elementURL } })
-  },
-  cancelSelectingElement: () => {
-    set({ selectedElement: null })
   },
   removeStickerElement: (stickerId) => {
     const { stickerElements } = get()
@@ -42,5 +51,11 @@ export const useEditedElementStore = create<TUseElementStore>((set, get) => ({
       stickerElements: stickerElements.filter((sticker) => sticker.id !== stickerId),
       selectedElement: null,
     })
+  },
+  selectElement: (elementId, element, elementType, elementURL) => {
+    set({ selectedElement: { element, elementType, elementId, elementURL } })
+  },
+  cancelSelectingElement: () => {
+    set({ selectedElement: null })
   },
 }))

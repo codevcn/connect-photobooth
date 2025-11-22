@@ -12,15 +12,25 @@ interface StickerElementProps {
   element: TStickerVisualState
   canvasAreaRef: React.RefObject<HTMLDivElement | null>
   mountType: 'new' | 'from-saved'
+  isSelected: boolean
+  selectElement: (
+    elementId: string,
+    element: HTMLElement,
+    elementType: 'sticker',
+    path: string
+  ) => void
+  removeStickerElement: (stickerElementId: string) => void
 }
 
-export const StickerElement = ({ element, canvasAreaRef, mountType }: StickerElementProps) => {
-  const selectedElement = useEditedElementStore((s) => s.selectedElement)
-  const selectedElementId = selectedElement?.elementId
-  const selectElement = useEditedElementStore((s) => s.selectElement)
-  const removeStickerElement = useEditedElementStore((s) => s.removeStickerElement)
+export const StickerElement = ({
+  element,
+  canvasAreaRef,
+  mountType,
+  isSelected,
+  selectElement,
+  removeStickerElement,
+}: StickerElementProps) => {
   const { path, id } = element
-  const isSelected = selectedElementId === id
   const {
     forPinch: { ref: refForPinch },
     forRotate: { ref: refForRotate, rotateButtonRef },
@@ -118,9 +128,9 @@ export const StickerElement = ({ element, canvasAreaRef, mountType }: StickerEle
   }
 
   useEffect(() => {
-    if (selectedElementId !== id) return
+    if (!isSelected) return
     eventEmitter.emit(EInternalEvents.SYNC_ELEMENT_PROPS, id, 'sticker')
-  }, [scale, angle, position, selectedElementId, id])
+  }, [scale, angle, position, isSelected, id])
 
   useEffect(() => {
     initElement()

@@ -1,6 +1,5 @@
-import { useGlobalContext } from '@/context/global-context'
-import { EInternalEvents } from '@/utils/enums'
-import { eventEmitter } from '@/utils/events'
+import { useGlobalContext } from '@/contexts/global-context'
+import { EInternalEvents, eventEmitter } from '@/utils/events'
 import {
   TElementType,
   TFontName,
@@ -8,21 +7,8 @@ import {
   TLoadFontStatus,
   TTextVisualState,
 } from '@/utils/types/global'
-import {
-  RefreshCw,
-  Move,
-  Check,
-  ALargeSmall,
-  Palette,
-  TypeOutline,
-  X,
-  Pencil,
-  // ChevronUp,
-  // ChevronDown,
-} from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { HexColorPicker } from 'react-colorful'
-import { createPortal } from 'react-dom'
 import { useDebouncedCallback } from '@/hooks/use-debounce'
 import { getInitialContants } from '@/utils/contants'
 import { useFontLoader } from '@/hooks/use-font'
@@ -112,7 +98,21 @@ const ColorPickerModal = ({
             onClick={() => onHideShow(false)}
             className="text-gray-800 active:scale-90 w-8 h-8 flex items-center justify-center rounded-full transition"
           >
-            <X size={20} strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-x-icon lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
           </button>
         </div>
 
@@ -219,7 +219,21 @@ const TextFontPicker = ({
             onClick={() => onHideShow(false)}
             className="text-gray-500 hover:text-gray-700 text-xl font-bold w-8 h-8 flex items-center justify-center"
           >
-            <X size={20} strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-x-icon lucide-x"
+            >
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
           </button>
         </div>
 
@@ -528,72 +542,149 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
       <div className="absolute top-1/2 -translate-y-1/2 left-1 flex items-center z-30">
         <button
           onClick={onClose}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white  font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
-          <X size={20} className="text-white" strokeWidth={3} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-x-icon lucide-x"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
       </div>
 
       <div
         ref={menuRef}
-        className="NAME-menu-section STYLE-hide-scrollbar relative px-[40px] overflow-x-auto max-w-full flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
+        className="NAME-menu-section STYLE-hide-scrollbar relative px-10 overflow-x-auto max-w-full flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
       >
         <div className="NAME-form-group NAME-form-content col-span-2 flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
-            <Pencil size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-pen-icon lucide-pen"
+            >
+              <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+            </svg>
           </div>
           <div className="flex gap-1 ml-1">
             <input
               placeholder="Nhập nội dung..."
               onKeyDown={(e) => catchEnter(e, 'font-size')}
               onChange={onContentFieldChange}
-              className="border rounded px-1 py-0.5 text-base outline-none w-[40px]"
+              className="border rounded px-1 py-0.5 text-base outline-none w-10"
             />
           </div>
         </div>
         <div className="NAME-form-group NAME-form-fontSize flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
-            <ALargeSmall size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-alarge-small-icon lucide-a-large-small"
+            >
+              <path d="m15 16 2.536-7.328a1.02 1.02 1 0 1 1.928 0L22 16" />
+              <path d="M15.697 14h5.606" />
+              <path d="m2 16 4.039-9.69a.5.5 0 0 1 .923 0L11 16" />
+              <path d="M3.304 13h6.392" />
+            </svg>
           </div>
           <div className="flex gap-1 ml-1 grow">
             <input
               type="text"
               placeholder="Cỡ chữ, VD: 18"
               onKeyDown={(e) => catchEnter(e, 'font-size')}
-              className="border rounded px-1 py-0.5 text-base outline-none w-[40px]"
+              className="border rounded px-1 py-0.5 text-base outline-none w-10"
             />
           </div>
         </div>
         <div className="NAME-form-group NAME-form-angle flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
-            <RefreshCw size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-refresh-cw-icon lucide-refresh-cw"
+            >
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+              <path d="M21 3v5h-5" />
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+              <path d="M8 16H3v5" />
+            </svg>
           </div>
           <div className="flex gap-1 items-center ml-1 grow">
             <input
               type="text"
               placeholder="Độ xoay, VD: 22"
               onKeyDown={(e) => catchEnter(e, 'angle')}
-              className="border rounded px-1 py-0.5 text-base outline-none w-[40px]"
+              className="border rounded px-1 py-0.5 text-base outline-none w-10"
             />
             <span className="text-white text-base font-bold">độ</span>
           </div>
         </div>
         <div className="NAME-form-group NAME-form-position flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
-            <Move size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-move-icon lucide-move"
+            >
+              <path d="M12 2v20" />
+              <path d="m15 19-3 3-3-3" />
+              <path d="m19 9 3 3-3 3" />
+              <path d="M2 12h20" />
+              <path d="m5 9-3 3 3 3" />
+              <path d="m9 5 3-3 3 3" />
+            </svg>
           </div>
           <div className="flex ml-1 gap-1">
             <input
               type="text"
               placeholder="X, VD: 100"
               onKeyDown={(e) => catchEnter(e, 'posXY')}
-              className="border rounded px-1 py-0.5 text-base outline-none w-[40px]"
+              className="border rounded px-1 py-0.5 text-base outline-none w-10"
             />
             <input
               type="text"
               placeholder="Y, VD: 100"
               onKeyDown={(e) => catchEnter(e, 'posXY')}
-              className="border rounded px-1 py-0.5 text-base outline-none w-[40px]"
+              className="border rounded px-1 py-0.5 text-base outline-none w-10"
             />
           </div>
         </div>
@@ -604,7 +695,24 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
           >
             <div className="flex gap-1 mx-1">
               <div>
-                <Palette size={20} className="text-white" strokeWidth={3} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-palette-icon lucide-palette text-white"
+                >
+                  <path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z" />
+                  <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+                  <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+                  <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+                  <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" />
+                </svg>
               </div>
             </div>
           </div>
@@ -622,7 +730,20 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
           >
             <div className="flex gap-1 mx-1">
               <div>
-                <TypeOutline size={20} className="text-white" strokeWidth={3} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-type-outline-icon lucide-type-outline"
+                >
+                  <path d="M14 16.5a.5.5 0 0 0 .5.5h.5a2 2 0 0 1 0 4H9a2 2 0 0 1 0-4h.5a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5V8a2 2 0 0 1-4 0V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-4 0v-.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5Z" />
+                </svg>
               </div>
             </div>
           </div>
@@ -639,9 +760,22 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
       <div className="z-20 absolute top-1/2 -translate-y-1/2 right-1 flex items-center">
         <button
           onClick={handleClickCheck}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white  font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
-          <Check size={20} className="text-white" strokeWidth={3} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-check-icon lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
         </button>
       </div>
     </>

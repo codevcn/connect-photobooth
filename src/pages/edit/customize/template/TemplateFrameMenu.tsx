@@ -15,8 +15,9 @@ type TCropElementModalWrapperProps = {
 const CropImageModalWrapper = ({ frameId, imageUrl }: TCropElementModalWrapperProps) => {
   const [showCropModal, setShowCropModal] = useState<boolean>(false)
 
-  const handleCropComplete = (croppedImageUrl: string) => {
-    eventEmitter.emit(EInternalEvents.CROP_PRINTED_IMAGE_ON_FRAME, frameId, croppedImageUrl)
+  const handleCropComplete = (_: string, croppedImageUrl: string) => {
+    console.log('>>> cropped img r:', croppedImageUrl)
+    useTemplateStore.getState().updateFrameImageURL(croppedImageUrl, frameId)
     setShowCropModal(false)
   }
 
@@ -99,47 +100,49 @@ const RemovePrintedElementFromFrame = ({ frameId }: TRemovePrintedElementFromFra
         <span>Xóa ảnh</span>
       </button>
 
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div
-            className="bg-black/50 z-10 absolute inset-0"
-            onClick={() => setShowDeleteConfirm(false)}
-          ></div>
-          <div className="relative z-20 bg-white p-4 rounded shadow-lg">
-            <div>
-              <p className="font-bold">Bạn xác nhận sẽ xóa ảnh?</p>
-            </div>
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="py-2 px-4 font-bold rounded bg-gray-600 text-white"
-              >
-                Hủy
-              </button>
-              <button
-                onClick={handleRemoveFrameImage}
-                className="flex items-center justify-center gap-1.5 py-2 px-4 font-bold rounded bg-main-cl text-white"
-              >
-                <span>Xác nhận</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-check-icon lucide-check"
+      {showDeleteConfirm &&
+        createPortal(
+          <div className="NAME-del fixed inset-0 flex items-center justify-center z-99">
+            <div
+              className="bg-black/50 z-10 absolute inset-0"
+              onClick={() => setShowDeleteConfirm(false)}
+            ></div>
+            <div className="relative z-20 bg-white p-4 rounded shadow-lg">
+              <div>
+                <p className="font-bold">Bạn xác nhận sẽ xóa ảnh?</p>
+              </div>
+              <div className="flex justify-end gap-2 mt-4">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="py-2 px-4 font-bold rounded bg-gray-600 text-white"
                 >
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </button>
+                  Hủy
+                </button>
+                <button
+                  onClick={handleRemoveFrameImage}
+                  className="flex items-center justify-center gap-1.5 cursor-pointer mobile-touch py-2 px-4 font-bold rounded bg-main-cl text-white"
+                >
+                  <span>Xác nhận</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-check-icon lucide-check"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </>
   )
 }
