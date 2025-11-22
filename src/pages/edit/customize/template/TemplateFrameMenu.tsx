@@ -6,28 +6,25 @@ import { CropElementModal } from './CropElementModal'
 import { createPortal } from 'react-dom'
 import { useEditedElementStore } from '@/stores/element/element.store'
 import { useTemplateStore } from '@/stores/ui/template.store'
-import { useProductUIDataStore } from '@/stores/ui/product-ui-data.store'
 
 type TCropElementModalWrapperProps = {
   frameId: string
   imageUrl: string
-  onClose: () => void
 }
 
-const CropImageModalWrapper = ({ frameId, imageUrl, onClose }: TCropElementModalWrapperProps) => {
+const CropImageModalWrapper = ({ frameId, imageUrl }: TCropElementModalWrapperProps) => {
   const [showCropModal, setShowCropModal] = useState<boolean>(false)
 
   const handleCropComplete = (croppedImageUrl: string) => {
     eventEmitter.emit(EInternalEvents.CROP_PRINTED_IMAGE_ON_FRAME, frameId, croppedImageUrl)
     setShowCropModal(false)
-    onClose()
   }
 
   return (
     <>
       <button
         onClick={() => setShowCropModal(true)}
-        className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-pink-cl rounded p-1 transition-colors"
+        className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-main-cl rounded p-1 transition-colors"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,12 +50,133 @@ const CropImageModalWrapper = ({ frameId, imageUrl, onClose }: TCropElementModal
           <CropElementModal
             elementId={frameId}
             imageUrl={imageUrl}
-            onClose={onClose}
+            onClose={() => setShowCropModal(false)}
             onCropComplete={handleCropComplete}
           />,
           document.body
         )}
     </>
+  )
+}
+
+type TRemovePrintedElementFromFrameProps = {
+  frameId: string
+}
+
+const RemovePrintedElementFromFrame = ({ frameId }: TRemovePrintedElementFromFrameProps) => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
+  const removeFrameImage = useTemplateStore((s) => s.removeFrameImage)
+
+  const handleRemoveFrameImage = () => {
+    removeFrameImage(frameId)
+    setShowDeleteConfirm(false)
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setShowDeleteConfirm(true)}
+        className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-main-cl rounded p-1 transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-trash2-icon lucide-trash-2"
+        >
+          <path d="M10 11v6" />
+          <path d="M14 11v6" />
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+          <path d="M3 6h18" />
+          <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        </svg>
+        <span>Xóa ảnh</span>
+      </button>
+
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="bg-black/50 z-10 absolute inset-0"
+            onClick={() => setShowDeleteConfirm(false)}
+          ></div>
+          <div className="relative z-20 bg-white p-4 rounded shadow-lg">
+            <div>
+              <p className="font-bold">Bạn xác nhận sẽ xóa ảnh?</p>
+            </div>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="py-2 px-4 font-bold rounded bg-gray-600 text-white"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleRemoveFrameImage}
+                className="flex items-center justify-center gap-1.5 py-2 px-4 font-bold rounded bg-main-cl text-white"
+              >
+                <span>Xác nhận</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-check-icon lucide-check"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+type TChangePrintedImageProps = {
+  frameId: string
+}
+
+const ChangePrintedImage = ({ frameId }: TChangePrintedImageProps) => {
+  const handleShowPrintedImagesModal = () => {
+    eventEmitter.emit(EInternalEvents.HIDE_SHOW_PRINTED_IMAGES_MODAL, true, frameId)
+  }
+
+  return (
+    <button
+      onClick={handleShowPrintedImagesModal}
+      className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-main-cl rounded p-1 transition-colors"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="lucide lucide-refresh-ccw-icon lucide-refresh-ccw"
+      >
+        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+        <path d="M3 3v5h5" />
+        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+        <path d="M16 16h5v5" />
+      </svg>
+      <span>Đổi ảnh</span>
+    </button>
   )
 }
 
@@ -72,9 +190,7 @@ type PrintedImageMenuProps = {
 
 export const TemplateFrameMenu = ({ frameId, onClose, printedImageURL }: PrintedImageMenuProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
   const selectedElement = useEditedElementStore((s) => s.selectedElement)
-  const removeFrameImage = useTemplateStore((s) => s.removeFrameImage)
 
   const validateInputsPositiveNumber = (
     inputs: HTMLInputElement[],
@@ -155,11 +271,6 @@ export const TemplateFrameMenu = ({ frameId, onClose, printedImageURL }: Printed
     }
   }
 
-  const handleRemoveFrameImage = () => {
-    removeFrameImage(frameId)
-    setShowDeleteConfirm(false)
-  }
-
   const getAllInputsInForm = () => {
     const menuSection = menuRef.current
     const scaleInput = menuSection?.querySelector<HTMLInputElement>('.NAME-form-scale input')
@@ -206,20 +317,6 @@ export const TemplateFrameMenu = ({ frameId, onClose, printedImageURL }: Printed
     }
   }
 
-  const handleShowPrintedImagesModal = () => {
-    const pickedPrintSurface = useProductUIDataStore.getState().pickedSurface
-    if (!pickedPrintSurface) return
-    eventEmitter.emit(
-      EInternalEvents.HIDE_SHOW_PRINTED_IMAGES_MODAL,
-      true,
-      {
-        width: pickedPrintSurface.area.printW,
-        height: pickedPrintSurface.area.printH,
-      },
-      frameId
-    )
-  }
-
   useEffect(() => {
     listenElementProps(frameId, 'printed-image')
   }, [frameId])
@@ -236,7 +333,7 @@ export const TemplateFrameMenu = ({ frameId, onClose, printedImageURL }: Printed
       <div className="absolute top-1/2 -translate-y-1/2 left-1 flex items-center z-30">
         <button
           onClick={onClose}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -260,108 +357,21 @@ export const TemplateFrameMenu = ({ frameId, onClose, printedImageURL }: Printed
         ref={menuRef}
         className="NAME-menu-section STYLE-hide-scrollbar z-10 px-10 relative overflow-x-auto flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
       >
-        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-pink-cl rounded px-1 py-0.5 shadow">
-          <CropImageModalWrapper frameId={frameId} imageUrl={printedImageURL} onClose={onClose} />
+        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-main-cl rounded px-1 py-0.5 shadow">
+          <CropImageModalWrapper frameId={frameId} imageUrl={printedImageURL} />
         </div>
-        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-pink-cl rounded px-1 py-0.5 shadow">
-          <button
-            onClick={() => setShowDeleteConfirm(true)}
-            className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-pink-cl rounded p-1 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-trash2-icon lucide-trash-2"
-            >
-              <path d="M10 11v6" />
-              <path d="M14 11v6" />
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-              <path d="M3 6h18" />
-              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-            </svg>
-            <span>Xóa ảnh</span>
-          </button>
+        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-main-cl rounded px-1 py-0.5 shadow">
+          <RemovePrintedElementFromFrame frameId={frameId} />
         </div>
-        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-pink-cl rounded px-1 py-0.5 shadow">
-          <button
-            onClick={handleShowPrintedImagesModal}
-            className="group flex flex-nowrap items-center justify-center font-bold gap-1 text-white hover:bg-white hover:text-pink-cl rounded p-1 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-refresh-ccw-icon lucide-refresh-ccw"
-            >
-              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-              <path d="M3 3v5h5" />
-              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-              <path d="M16 16h5v5" />
-            </svg>
-            <span>Đổi ảnh</span>
-          </button>
+        <div className="NAME-form-group NAME-form-crop min-w-[100px] col-span-2 flex shrink-0 items-center justify-center bg-main-cl rounded px-1 py-0.5 shadow">
+          <ChangePrintedImage frameId={frameId} />
         </div>
-
-        {showDeleteConfirm && (
-          <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div
-              className="bg-black/50 z-10 absolute inset-0"
-              onClick={() => setShowDeleteConfirm(false)}
-            ></div>
-            <div className="relative z-20 bg-white p-4 rounded shadow-lg">
-              <div>
-                <p className="font-bold">Bạn xác nhận sẽ xóa ảnh?</p>
-              </div>
-              <div className="flex justify-end gap-2 mt-4">
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  className="py-2 px-4 font-bold rounded bg-gray-600 text-white"
-                >
-                  Hủy
-                </button>
-                <button
-                  onClick={handleRemoveFrameImage}
-                  className="flex items-center justify-center gap-1.5 py-2 px-4 font-bold rounded bg-pink-cl text-white"
-                >
-                  <span>Xác nhận</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-check-icon lucide-check"
-                  >
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="absolute top-1/2 -translate-y-1/2 right-1 flex items-center z-20">
         <button
           onClick={onClose}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-white outline font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-white outline font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

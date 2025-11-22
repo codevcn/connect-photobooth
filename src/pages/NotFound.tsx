@@ -6,7 +6,7 @@ export default function NotFound() {
       {/* Animated background circles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-72 h-72 bg-light-main-cl rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-pink-hover-cl rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-main-hover-cl rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
         <div className="absolute -bottom-8 left-1/2 w-72 h-72 bg-superlight-main-cl rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
@@ -14,7 +14,7 @@ export default function NotFound() {
       <div className="relative z-10 max-w-2xl w-full">
         {/* 404 Number */}
         <div className="text-center mb-8">
-          <h1 className="text-[12rem] font-black leading-none bg-linear-to-br from-main-cl via-pink-hover-cl to-dark-main-cl bg-clip-text text-transparent drop-shadow-2xl animate-pulse-slow select-none">
+          <h1 className="text-[12rem] font-black leading-none bg-linear-to-br from-main-cl via-main-hover-cl to-dark-main-cl bg-clip-text text-transparent drop-shadow-2xl animate-pulse-slow select-none">
             404
           </h1>
           <div className="relative -mt-20">

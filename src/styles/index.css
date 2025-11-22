@@ -5,7 +5,7 @@
   --vcn-light-main-cl: #ffece4;
   --vcn-main-cl: #f54900;
   --vcn-secondary-cl: #f7921f;
-  --vcn-pink-hover-cl: #ffd5c1;
+  --vcn-main-hover-cl: #ffd5c1;
   --vcn-dark-main-cl: #aa4419;
 }
 
@@ -24,7 +24,7 @@
 
   /* Custom Colors */
   --color-main-cl: var(--vcn-main-cl);
-  --color-pink-hover-cl: var(--vcn-pink-hover-cl);
+  --color-main-hover-cl: var(--vcn-main-hover-cl);
   --color-light-main-cl: var(--vcn-light-main-cl);
   --color-superlight-main-cl: var(--vcn-superlight-main-cl);
   --color-dark-main-cl: var(--vcn-dark-main-cl);

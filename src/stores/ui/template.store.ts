@@ -126,12 +126,13 @@ export const useTemplateStore = create(
           let frameIndex: number = getInitialContants<number>('PLACED_IMG_FRAME_INDEX')
           for (const frame of template.frames) {
             if (frame.id === frameId) {
-              assignFrameSizeByTemplateType(printAreaSize, template.type, frame)
-              if (matchPrintedImgAndAllowSquareMatchToShapeSize(frame, printedImage)) {
-                frame.placedImage = initPlacedImage(frameIndex)
-              } else {
-                toast.warning('Ảnh không phù hợp với khung hình. Vui lòng chọn ảnh khác.')
-              }
+              frame.placedImage = initPlacedImage(frameIndex)
+              // assignFrameSizeByTemplateType(printAreaSize, template.type, frame)
+              // if (matchPrintedImgAndAllowSquareMatchToShapeSize(frame, printedImage)) {
+              //   frame.placedImage = initPlacedImage(frameIndex)
+              // } else {
+              //   toast.warning('Ảnh không phù hợp với khung hình. Vui lòng chọn ảnh khác.')
+              // }
               break
             }
             frameIndex++
@@ -145,18 +146,18 @@ export const useTemplateStore = create(
             const foundFrameIndex = template.frames.findIndex((f) => !f.placedImage)
             if (foundFrameIndex >= 0) {
               const foundFrame = template.frames[foundFrameIndex]
-              assignFrameSizeByTemplateType(printAreaSize, template.type, foundFrame)
-              if (matchPrintedImgAndAllowSquareMatchToShapeSize(foundFrame, printedImage)) {
-                foundFrame.placedImage = initPlacedImage(foundFrameIndex + 1)
-              } else {
-                toast.warning('Ảnh không phù hợp với khung hình. Vui lòng chọn ảnh khác.')
-              }
+              foundFrame.placedImage = initPlacedImage(foundFrameIndex + 1)
+              // assignFrameSizeByTemplateType(printAreaSize, template.type, foundFrame)
+              // if (matchPrintedImgAndAllowSquareMatchToShapeSize(foundFrame, printedImage)) {
+              //   foundFrame.placedImage = initPlacedImage(foundFrameIndex + 1)
+              // } else {
+              //   toast.warning('Ảnh không phù hợp với khung hình. Vui lòng chọn ảnh khác.')
+              // }
               break
             }
           }
         }
       }
-      console.log('>>> check all:', templates)
 
       set({ allTemplates: templates })
     },

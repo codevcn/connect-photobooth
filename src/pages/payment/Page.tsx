@@ -55,7 +55,7 @@ const PaymentPage = () => {
   const [showModal, setShowModal] = useState(false)
   const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState<string>()
-  const { products } = useProductStore((s) => ({ products: s.products }))
+  const products = useProductStore((s) => s.products)
 
   // Hàm tính subtotal (tổng tiền trước giảm giá voucher)
   const calculateSubtotal = (): number => {

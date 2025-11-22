@@ -1,4 +1,4 @@
-import { TBaseProduct, TPrintAreaInfo, TPrintedImage, TPrintTemplate } from '@/utils/types/global'
+import { TBaseProduct, TPrintedImage, TPrintTemplate } from '@/utils/types/global'
 import { PrintAreaOverlayPreview } from './live-preview/PrintAreaOverlay'
 import { usePrintArea } from '@/hooks/use-print-area'
 import { usePrintedImageStore } from '@/stores/printed-image/printed-image.store'
@@ -32,10 +32,11 @@ const Product = ({
     <div
       key={product.id}
       ref={printAreaContainerRef}
+      data-product-id={product.id}
+      data-is-picked={isPicked}
       className={`${
         isPicked ? 'outline-2 outline-main-cl' : 'outline-0'
-      } w-full cursor-pointer mobile-touch outline-0 hover:outline-2 hover:outline-main-cl aspect-square relative rounded-xl transition-transform duration-200 border border-gray-200`}
-      data-url={product.url}
+      } NAME-gallery-product w-full cursor-pointer mobile-touch outline-0 hover:outline-2 hover:outline-main-cl aspect-square relative rounded-xl transition-transform duration-200 border border-gray-200`}
       onClick={() => onPickProduct(product, initialTemplate)}
     >
       <img
@@ -60,6 +61,17 @@ export const ProductGallery = ({ products }: TProductGalleryProps) => {
   const handlePickProduct = useProductUIDataStore((s) => s.handlePickProduct)
   const initializeAddingTemplates = useTemplateStore((s) => s.initializeAddingTemplates)
 
+  const scrollToPickedProduct = () => {
+    if (pickedProduct) {
+      const productElement = document.body.querySelector<HTMLElement>(
+        `.NAME-gallery-product[data-product-id="${pickedProduct.id}"]`
+      )
+      if (productElement && productElement.dataset.isPicked === 'true') {
+        productElement.scrollIntoView({ behavior: 'instant', block: 'center' })
+      }
+    }
+  }
+
   const handleInitFirstProduct = (
     prod: TBaseProduct,
     initialTemplate: TPrintTemplate,
@@ -68,6 +80,10 @@ export const ProductGallery = ({ products }: TProductGalleryProps) => {
     initFirstProduct(prod, initialTemplate)
     initializeAddingTemplates([initialTemplate], isFinal)
   }
+
+  useEffect(() => {
+    scrollToPickedProduct()
+  }, [products, pickedProduct])
 
   return (
     <div className="md:h-screen h-fit flex flex-col bg-white py-3 border border-gray-200">

@@ -155,7 +155,7 @@ const ColorPickerModal = ({
         <div className="text-center">
           <button
             onClick={() => onHideShow(false)}
-            className="bg-pink-cl hover:opacity-90 active:scale-95 text-white font-semibold px-6 py-2 rounded-lg transition-all w-full"
+            className="bg-main-cl hover:opacity-90 active:scale-95 text-white font-semibold px-6 py-2 rounded-lg transition-all w-full"
           >
             Xong
           </button>
@@ -528,7 +528,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
       <div className="absolute top-1/2 -translate-y-1/2 left-1 flex items-center z-30">
         <button
           onClick={onClose}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
           <X size={20} className="text-white" strokeWidth={3} />
         </button>
@@ -538,7 +538,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
         ref={menuRef}
         className="NAME-menu-section STYLE-hide-scrollbar relative px-[40px] overflow-x-auto max-w-full flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
       >
-        <div className="NAME-form-group NAME-form-content col-span-2 flex items-center bg-pink-cl rounded px-1 py-0.5 shadow">
+        <div className="NAME-form-group NAME-form-content col-span-2 flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
             <Pencil size={20} className="text-white" strokeWidth={3} />
           </div>
@@ -551,7 +551,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
             />
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-fontSize flex items-center bg-pink-cl rounded px-1 py-0.5 shadow">
+        <div className="NAME-form-group NAME-form-fontSize flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
             <ALargeSmall size={20} className="text-white" strokeWidth={3} />
           </div>
@@ -564,7 +564,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
             />
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-angle flex items-center bg-pink-cl rounded px-1 py-0.5 shadow">
+        <div className="NAME-form-group NAME-form-angle flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
             <RefreshCw size={20} className="text-white" strokeWidth={3} />
           </div>
@@ -578,7 +578,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
             <span className="text-white text-base font-bold">độ</span>
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-position flex items-center bg-pink-cl rounded px-1 py-0.5 shadow">
+        <div className="NAME-form-group NAME-form-position flex items-center bg-main-cl rounded px-1 py-0.5 shadow">
           <div className="min-w-[22px]">
             <Move size={20} className="text-white" strokeWidth={3} />
           </div>
@@ -600,7 +600,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
         <div className="NAME-form-group NAME-form-color flex items-stretch justify-center gap-1 rounded">
           <div
             onClick={() => setShowColorPicker((pre) => !pre)}
-            className="flex items-center justify-center cursor-pointer gap-1 active:scale-90 transition bg-pink-cl rounded shadow px-1 h-9"
+            className="flex items-center justify-center cursor-pointer gap-1 active:scale-90 transition bg-main-cl rounded shadow px-1 h-9"
           >
             <div className="flex gap-1 mx-1">
               <div>
@@ -618,7 +618,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
         <div className="NAME-form-group NAME-form-font flex items-stretch justify-center gap-1 relative rounded">
           <div
             onClick={() => setShowTextFontPicker((pre) => !pre)}
-            className="flex items-center justify-center cursor-pointer gap-1 active:scale-90 transition bg-pink-cl rounded shadow px-1 h-9"
+            className="flex items-center justify-center cursor-pointer gap-1 active:scale-90 transition bg-main-cl rounded shadow px-1 h-9"
           >
             <div className="flex gap-1 mx-1">
               <div>
@@ -639,7 +639,7 @@ export const TextElementMenu = ({ elementId, onClose }: PrintedImageMenuProps) =
       <div className="z-20 absolute top-1/2 -translate-y-1/2 right-1 flex items-center">
         <button
           onClick={handleClickCheck}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
           <Check size={20} className="text-white" strokeWidth={3} />
         </button>

@@ -17,7 +17,7 @@ export const IdleWarningModal = ({ show, countdown, onConfirm }: TIdleWarningMod
         <div className="flex justify-center mb-6">
           <div className="relative">
             <div className="absolute inset-0 bg-main-cl/20 rounded-full animate-ping"></div>
-            <div className="relative bg-linear-to-br from-main-cl to-pink-hover-cl p-5 rounded-full shadow-lg">
+            <div className="relative bg-linear-to-br from-main-cl to-main-hover-cl p-5 rounded-full shadow-lg">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="48"
@@ -49,7 +49,7 @@ export const IdleWarningModal = ({ show, countdown, onConfirm }: TIdleWarningMod
         </p>
 
         {/* Countdown */}
-        <div className="bg-linear-to-br from-main-cl/10 to-pink-hover-cl/10 rounded-2xl p-6 mb-6 border-2 border-main-cl/30">
+        <div className="bg-linear-to-br from-main-cl/10 to-main-hover-cl/10 rounded-2xl p-6 mb-6 border-2 border-main-cl/30">
           <div className="text-center">
             <p className="text-sm text-gray-600 mb-2 font-medium">Thời gian còn lại</p>
             <div className="flex items-center justify-center gap-2">
@@ -64,7 +64,7 @@ export const IdleWarningModal = ({ show, countdown, onConfirm }: TIdleWarningMod
         {/* Confirm Button */}
         <button
           onClick={onConfirm}
-          className="w-full bg-linear-to-r from-main-cl to-pink-hover-cl hover:from-dark-main-cl hover:to-main-cl text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all duration-200 flex items-center justify-center gap-3"
+          className="w-full bg-linear-to-r from-main-cl to-main-hover-cl hover:from-dark-main-cl hover:to-main-cl text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg hover:shadow-xl active:scale-95 transition-all duration-200 flex items-center justify-center gap-3"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

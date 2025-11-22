@@ -1,32 +1,24 @@
 import { TStickerVisualState } from '@/utils/types/global'
-import { X, RotateCw, Scaling } from 'lucide-react'
 import { useEffect, useRef } from 'react'
-import { eventEmitter } from '@/utils/events'
-import { EInternalEvents } from '@/utils/enums'
+import { EInternalEvents, eventEmitter } from '@/utils/events'
 import { useElementControl } from '@/hooks/element/use-element-control'
 import { getNaturalSizeOfImage, typeToObject } from '@/utils/helpers'
-import { useElementLayerContext } from '@/context/global-context'
+import { useEditedElementStore } from '@/stores/element/element.store'
 
 const MAX_ZOOM: number = 3
 const MIN_ZOOM: number = 0.3
 
 interface StickerElementProps {
   element: TStickerVisualState
-  onRemoveElement: (id: string) => void
-  selectedElementId: string | null
-  onUpdateSelectedElementId: (id: string | null) => void
-  canvasAreaRef: React.MutableRefObject<HTMLDivElement | null>
+  canvasAreaRef: React.RefObject<HTMLDivElement | null>
   mountType: 'new' | 'from-saved'
 }
 
-export const StickerElement = ({
-  element,
-  onRemoveElement,
-  onUpdateSelectedElementId,
-  selectedElementId,
-  canvasAreaRef,
-  mountType,
-}: StickerElementProps) => {
+export const StickerElement = ({ element, canvasAreaRef, mountType }: StickerElementProps) => {
+  const selectedElement = useEditedElementStore((s) => s.selectedElement)
+  const selectedElementId = selectedElement?.elementId
+  const selectElement = useEditedElementStore((s) => s.selectElement)
+  const removeStickerElement = useEditedElementStore((s) => s.removeStickerElement)
   const { path, id } = element
   const isSelected = selectedElementId === id
   const {
@@ -45,11 +37,13 @@ export const StickerElement = ({
     zindex: element.zindex,
   })
   const rootRef = useRef<HTMLElement | null>(null)
-  const { addToElementLayers } = useElementLayerContext()
+  // const { addToElementLayers } = useElementLayerContext()
 
   const pickElement = () => {
-    eventEmitter.emit(EInternalEvents.PICK_ELEMENT, rootRef.current, 'sticker')
-    onUpdateSelectedElementId(id)
+    const root = rootRef.current
+    if (!root) return
+    eventEmitter.emit(EInternalEvents.PICK_ELEMENT, id, root, 'sticker')
+    selectElement(id, root, 'sticker', path)
   }
 
   const listenSubmitEleProps = (
@@ -120,7 +114,7 @@ export const StickerElement = ({
   }
 
   const handleAddElementLayer = () => {
-    addToElementLayers({ elementId: id, index: zindex })
+    // addToElementLayers({ elementId: id, index: zindex })
   }
 
   useEffect(() => {
@@ -157,7 +151,7 @@ export const StickerElement = ({
       }}
       className={`${
         isSelected ? 'shadow-[0_0_0_2px_#d91670]' : ''
-      } NAME-root-element NAME-element-type-sticker absolute h-fit w-fit touch-none`}
+      } NAME-root-element NAME-element-type-sticker absolute h-fit w-fit touch-none z-6`}
       onClick={pickElement}
       data-visual-state={JSON.stringify(
         typeToObject<TStickerVisualState>({
@@ -179,11 +173,11 @@ export const StickerElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-rotate-box absolute -top-7 -left-7 z-[999] md:-top-9 md:-left-9`}
+          } NAME-rotate-box absolute -top-7 -left-7 z-999 md:-top-9 md:-left-9`}
         >
           <button
             ref={rotateButtonRef}
-            className="cursor-grab active:cursor-grabbing bg-pink-cl text-white rounded-full p-1 active:scale-90 transition"
+            className="cursor-grab active:cursor-grabbing bg-main-cl text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -203,12 +197,12 @@ export const StickerElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-remove-box absolute -bottom-7 -right-7 z-[999] md:-bottom-9 md:-right-9`}
+          } NAME-remove-box absolute -bottom-7 -right-7 z-999 md:-bottom-9 md:-right-9`}
         >
           <button
             ref={zoomButtonRef}
             style={{ transform: `rotateY(180deg)` }}
-            className="cursor-grab active:cursor-grabbing bg-pink-cl text-white rounded-full p-1 active:scale-90 transition"
+            className="cursor-grab active:cursor-grabbing bg-main-cl text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -232,10 +226,10 @@ export const StickerElement = ({
         <div
           className={`${
             isSelected ? 'block' : 'hidden'
-          } NAME-remove-box absolute -top-7 -right-7 z-[999] md:-top-9 md:-right-9`}
+          } NAME-remove-box absolute -top-7 -right-7 z-999 md:-top-9 md:-right-9`}
         >
           <button
-            onClick={() => onRemoveElement(id)}
+            onClick={() => removeStickerElement(id)}
             className="bg-red-600 text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg

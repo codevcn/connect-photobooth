@@ -7,7 +7,7 @@ import {
 } from '@/utils/types/global'
 
 export const usePrintAreaPreview = (
-  setPrintAreaBounds: React.Dispatch<React.SetStateAction<TBoxBoundingInfo | null>>
+  setPrintAreaBounds?: React.Dispatch<React.SetStateAction<TBoxBoundingInfo | null>>
 ) => {
   const printAreaRef = useRef<HTMLDivElement | null>(null)
   const containerSizeRef = useRef<TSizeInfo | null>(null)
@@ -26,7 +26,7 @@ export const usePrintAreaPreview = (
           '.NAME-product-image'
         ) as HTMLImageElement
         if (!imageElement) {
-          setPrintAreaBounds(null)
+          setPrintAreaBounds?.(null)
           containerSizeRef.current = null
           return null
         }
@@ -41,7 +41,7 @@ export const usePrintAreaPreview = (
 
         if (naturalWidth === 0 || naturalHeight === 0) {
           // Ảnh chưa load xong
-          setPrintAreaBounds(null)
+          setPrintAreaBounds?.(null)
           containerSizeRef.current = null
           return null
         }
@@ -88,7 +88,7 @@ export const usePrintAreaPreview = (
         const height = productPrintArea.printH * scaleY
 
         const newBounds = { x, y, width, height }
-        setPrintAreaBounds(newBounds)
+        setPrintAreaBounds?.(newBounds)
 
         // Cập nhật CSS cho print area
         if (printAreaRef.current) {
@@ -100,7 +100,7 @@ export const usePrintAreaPreview = (
 
         return newBounds
       } else {
-        setPrintAreaBounds(null)
+        setPrintAreaBounds?.(null)
         containerSizeRef.current = null
         return null
       }
@@ -167,7 +167,8 @@ export const usePrintArea = (printAreaInfo: TPrintAreaInfo): TUsePrintAreaReturn
   const checkIfAnyElementOutOfBounds = useCallback((): boolean => {
     if (!printAreaBounds) return false
 
-    const editableElements = document.querySelectorAll('.NAME-root-element')
+    const editableElements =
+      printAreaContainerRef.current?.querySelectorAll('.NAME-root-element') || []
     const editContainer = printAreaContainerRef.current
 
     if (!editContainer) return false
@@ -200,7 +201,8 @@ export const usePrintArea = (printAreaInfo: TPrintAreaInfo): TUsePrintAreaReturn
     let checkTimeout: NodeJS.Timeout
 
     const checkBounds = () => {
-      const editableElements = document.body.querySelectorAll('.NAME-root-element')
+      const editableElements =
+        printAreaContainerRef.current?.querySelectorAll('.NAME-root-element') || []
       // Nếu không có element nào thì không out of bounds
       if (editableElements.length === 0) {
         updateOverlayVisibility(false)

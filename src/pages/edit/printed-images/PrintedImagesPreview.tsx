@@ -18,22 +18,25 @@ export const PrintedImagesPreview = ({ printedImages }: TPrintedImagesProps) => 
   }
 
   return (
-    <div className="flex justify-center min-w-[50px] rounded text-pink-cl w-fit active:scale-90 transition relative">
-      <div onClick={showPrintedImagesModal} className="border-border rounded-md cursor-pointer">
-        {displayedImage && (
-          <div
-            key={displayedImage.id}
-            className="flex items-center h-[50px] overflow-hidden rounded"
-          >
-            <img
-              src={displayedImage.url}
-              alt="Printed image"
-              className={`h-max w-max max-h-[50px] max-w-20 my-auto object-contain rounded`}
-            />
-          </div>
-        )}
+    <div className="mt-6 w-full">
+      <h3 className="mb-1 font-bold text-gray-800">Chọn ảnh chụp photobooth</h3>
+      <div className="flex justify-center min-w-[50px] rounded text-main-cl w-fit active:scale-90 transition relative">
+        <div onClick={showPrintedImagesModal} className="border-border rounded-md cursor-pointer">
+          {displayedImage && (
+            <div
+              key={displayedImage.id}
+              className="flex items-center h-[50px] overflow-hidden rounded"
+            >
+              <img
+                src={displayedImage.url}
+                alt="Printed image"
+                className={`h-max w-max max-h-[50px] max-w-20 my-auto object-contain rounded`}
+              />
+            </div>
+          )}
+        </div>
+        {createPortal(<PrintedImagesModal printedImages={printedImages} />, document.body)}
       </div>
-      {createPortal(<PrintedImagesModal printedImages={printedImages} />, document.body)}
     </div>
   )
 }

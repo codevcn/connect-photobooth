@@ -22,7 +22,7 @@ export const PrintAreaOverlayPreview = ({
     <div
       ref={printAreaRef}
       className={cn(
-        `${printTemplate.type} z-2 flex justify-center items-center absolute transition duration-200`,
+        `${printTemplate.type} z-5 flex justify-center items-center absolute transition duration-200`,
         printAreaOptions?.className
       )}
     >
@@ -64,7 +64,7 @@ export const PrintAreaOverlay = ({
   printAreaRef,
   isOutOfBounds,
   printAreaOptions,
-  displayWarningOverlay,
+  displayWarningOverlay = true,
 }: TPrintAreaOverlayProps) => {
   const pickedTemplate = useTemplateStore((s) => s.pickedTemplate)
 
@@ -84,7 +84,7 @@ export const PrintAreaOverlay = ({
     <div
       ref={printAreaRef}
       className={cn(
-        'NAME-print-area-allowed z-5 border border-white border-dashed flex justify-center items-center absolute transition-all duration-300',
+        'NAME-print-area-allowed z-6 border border-white border-dashed flex justify-center items-center absolute transition-all duration-300',
         printAreaOptions?.className,
         displayWarningOverlay
           ? isOutOfBounds

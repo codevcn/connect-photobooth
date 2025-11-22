@@ -4,6 +4,7 @@ import {
   TPrintTemplate,
   TProductWithTemplate,
   TProductColor,
+  TPrintAreaInfo,
 } from '@/utils/types/global'
 import { create } from 'zustand'
 import { useTemplateStore } from './template.store'
@@ -12,6 +13,8 @@ type TProductUIDataStore = {
   pickedProduct: TProductWithTemplate | null
   pickedVariant: TClientProductVariant | null
   pickedSurface: TBaseProduct['printAreaList'][number] | null
+  isAddingToCart: boolean
+  cartCount: number
 
   // Actions
   handlePickProduct: (prod: TBaseProduct, initialTemplate: TPrintTemplate) => void
@@ -19,12 +22,38 @@ type TProductUIDataStore = {
   handlePickVariant: (variant: TClientProductVariant) => void
   handlePickColor: (color: TProductColor) => void
   handlePickSize: (selectedColor: TProductColor, size: string) => void
+  handlePickVariantSurface: (
+    variantId: TClientProductVariant['id'],
+    surfaceId: TPrintAreaInfo['id']
+  ) => void
+  setIsAddingToCart: (isAdding: boolean) => void
+  setCartCount: (count: number) => void
 }
 
 export const useProductUIDataStore = create<TProductUIDataStore>((set, get) => ({
   pickedProduct: null,
   pickedVariant: null,
   pickedSurface: null,
+  isAddingToCart: false,
+  cartCount: 0,
+
+  setIsAddingToCart: (isAdding: boolean) => {
+    set({ isAddingToCart: isAdding })
+  },
+
+  setCartCount: (count: number) => {
+    set({ cartCount: count })
+  },
+
+  handlePickVariantSurface: (variantId, surfaceId) => {
+    const pickedProduct = get().pickedProduct
+    if (!pickedProduct) return
+    const variant = pickedProduct.variants.find((v) => v.id === variantId)
+    const surface = pickedProduct.printAreaList.find((s) => s.id === surfaceId)
+    if (variant && surface) {
+      set({ pickedSurface: surface, pickedVariant: variant })
+    }
+  },
 
   handlePickColor: (color: TProductColor) => {
     const currentVariants = get().pickedProduct?.variants || []

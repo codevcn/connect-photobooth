@@ -196,7 +196,7 @@ export const CropElementModal = ({
   return (
     <div
       ref={cropModalContainerRef}
-      className="fixed inset-0 flex items-center justify-center z-90"
+      className="NAME-crop-element-modal fixed inset-0 flex items-center justify-center z-999"
     >
       <div className="absolute inset-0 bg-black/50 z-10" onClick={onClose}></div>
       <div className="relative z-20 w-full max-w-5xl">
@@ -264,14 +264,14 @@ export const CropElementModal = ({
             <div className="mt-auto pt-4">
               <div className="flex gap-y-2 gap-x-2 flex-col">
                 <button
-                  className="w-full h-8 rounded text-white bg-gray-400 font-bold hover:bg-gray-500 transition-colors disabled:opacity-50"
+                  className="w-full h-8 rounded text-white bg-gray-400 font-bold cursor-pointer hover:bg-gray-500 transition-colors disabled:opacity-50"
                   onClick={onClose}
                   disabled={isCropping}
                 >
                   Hủy
                 </button>
                 <button
-                  className="flex items-center justify-center gap-2 w-full h-8 rounded bg-pink-cl text-white font-bold active:scale-90 transition-colors disabled:opacity-50"
+                  className="flex items-center justify-center gap-2 w-full h-8 rounded cursor-pointer bg-main-cl text-white font-bold active:scale-90 transition-colors disabled:opacity-50"
                   onClick={handleCrop}
                   disabled={!completedCrop || isCropping}
                 >

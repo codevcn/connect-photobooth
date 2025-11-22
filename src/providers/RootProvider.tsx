@@ -27,7 +27,11 @@ export const AppRootProvider = ({ children }: { children: React.ReactNode }) => 
     }))
   }
 
-  const listenPickElement = (element: HTMLElement | null, elementType: TElementType | null) => {
+  const listenPickElement = (
+    elementId: string,
+    element: HTMLElement | null,
+    elementType: TElementType | null
+  ) => {
     setGlobalState((pre) => ({ ...pre, pickedElementRoot: element, elementType }))
   }
 

@@ -1,6 +1,6 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import EditPage from '@/pages/edit/PageWrapper'
-import NotFound from '@/pages/not-found'
+import NotFound from '@/pages/NotFound'
 import { LocalStorageHelper } from './utils/localstorage'
 import { ToastContainer } from 'react-toastify'
 import ScanQRPage from './pages/scan-qr/Page'

@@ -3,7 +3,7 @@ import { VietnamFlag } from '@/components/custom/icons/VietnamFlag'
 import { useProductUIDataStore } from '@/stores/ui/product-ui-data.store'
 import { formatNumberWithCommas, friendlyCurrency } from '@/utils/helpers'
 import { TBaseProduct, TClientProductVariant, TProductColor } from '@/utils/types/global'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 type TProductDetailsProps = {
   pickedProduct: TBaseProduct
@@ -56,7 +56,7 @@ export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetails
         </div>
         <div className="flex items-center justify-between text-sm">
           <span className="text-gray-800 font-bold">Chăm sóc khách hàng</span>
-          <span className="font-semibold text-orange-600 hover:text-pink-hover-cl transition-colors">
+          <span className="font-semibold text-orange-600 hover:text-main-hover-cl transition-colors">
             0987 654 321
           </span>
         </div>
@@ -105,88 +105,111 @@ export const ProductDetails = ({ pickedProduct, pickedVariant }: TProductDetails
         </div>
       </div>
 
-      <div className="bg-white py-4 px-4 rounded-lg border-border mt-4">
-        <h3 className="text-slate-800 font-bold text-lg mb-3">Màu sắc</h3>
-
-        <div className="flex flex-wrap gap-3">
-          {availableColors.map((color) => {
-            const isSelected = selectedColor.value === color.value
-            return (
-              <button
-                key={color.value}
-                onClick={() => handlePickColor(color)}
-                style={{ backgroundColor: color.value }}
-                className={`w-10 h-10 rounded-full focus:outline-none transition-all mobile-touch ${
-                  isSelected
-                    ? 'ring-2 ring-main-cl ring-offset-2 shadow-lg'
-                    : 'ring-1 ring-gray-300 ring-offset-2 hover:ring-secondary-cl hover:shadow-md'
-                }`}
-                aria-label={`Select ${color.title}`}
-                title={color.title}
-              >
-                {isSelected && (
-                  <div className="w-full h-full rounded-full flex items-center justify-center">
-                    <svg
-                      className="w-5 h-5 text-white drop-shadow-lg"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </button>
-            )
-          })}
+      <div className="mt-4 bg-gray-100 border-border rounded-lg overflow-hidden p-3">
+        <div>
+          <h3 className="block text-sm font-bold text-slate-900">Danh mục hình ảnh sản phẩm</h3>
+          <div className="grid grid-cols-3 gap-2 w-full mt-2">
+            {pickedProduct.detailImages.length > 0 ? (
+              pickedProduct.detailImages.map((imgURL) => (
+                <div key={imgURL} className={`bg-white`}>
+                  <img src={imgURL} alt="Danh mục ảnh sản phẩm" />
+                </div>
+              ))
+            ) : (
+              <div className="bg-white">
+                <img src={pickedProduct.url} alt="Ảnh đại diện sản phẩm" />
+              </div>
+            )}
+          </div>
         </div>
 
-        {pickedVariant && (
-          <p className="text-sm text-gray-600 mt-4">
-            <span className="font-medium">Đã chọn:</span>{' '}
-            <span className="font-semibold text-slate-800">{selectedColor.title}</span>
-          </p>
-        )}
-      </div>
+        <div className="rounded-lg mt-4">
+          <h3 className="text-slate-800 font-bold text-sm mb-3">Màu sắc</h3>
 
-      <div className="mt-4">
-        <div className="flex justify-between w-full mb-2">
-          <label className="block text-sm font-bold text-slate-900">Kích thước</label>
-          <button
-            onClick={() => setShowSizeChart(true)}
-            className="cursor-pointer mobile-touch text-main-cl underline text-sm font-medium hover:text-secondary-cl"
-          >
-            Bảng size
-          </button>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {availableSizesForColor.length > 0 ? (
-            availableSizesForColor.map((variant) => {
-              const isSelected = selectedSize === variant.size
-              const isOutOfStock = variant.stock === 0
+          <div className="flex flex-wrap gap-3">
+            {availableColors.map((color) => {
+              const lowercasedColorValue = color.value.toLowerCase()
+              const isSelected = selectedColor.value === color.value
               return (
                 <button
-                  key={variant.id}
-                  onClick={() => !isOutOfStock && handlePickSize(selectedColor, variant.size)}
-                  disabled={isOutOfStock}
-                  className={`px-5 py-1 font-bold rounded-lg transition-all mobile-touch ${
-                    isOutOfStock
-                      ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed line-through'
-                      : isSelected
-                      ? 'bg-main-cl border-2 border-main-cl text-white shadow-md'
-                      : 'bg-white border-2 border-gray-300 text-slate-700 hover:border-secondary-cl hover:text-secondary-cl'
+                  key={color.value}
+                  onClick={() => handlePickColor(color)}
+                  className={`w-10 h-10 rounded-full bg-white focus:outline-none transition-all mobile-touch ${
+                    isSelected
+                      ? 'ring-2 ring-main-cl ring-offset-2 shadow-lg'
+                      : 'ring-1 ring-gray-300 ring-offset-2 hover:ring-secondary-cl hover:shadow-md'
                   }`}
+                  title={color.title}
                 >
-                  {variant.size}
+                  <div
+                    style={{ backgroundColor: lowercasedColorValue }}
+                    className="h-full w-full rounded-full cursor-pointer"
+                  >
+                    {isSelected && (
+                      <div className="w-full h-full rounded-full flex items-center justify-center">
+                        <svg
+                          className={`${
+                            lowercasedColorValue === 'white' ||
+                            lowercasedColorValue === '#fff' ||
+                            lowercasedColorValue === '#ffffff' ||
+                            lowercasedColorValue === 'rgb(255, 255, 255)'
+                              ? 'text-gray-800'
+                              : 'text-white'
+                          } w-5 h-5 drop-shadow-lg`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                 </button>
               )
-            })
-          ) : (
-            <p className="text-sm text-gray-500 italic">Vui lòng chọn màu sắc</p>
-          )}
+            })}
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <div className="flex justify-between w-full mb-2">
+            <label className="block text-sm font-bold text-slate-900">Kích thước</label>
+            <button
+              onClick={() => setShowSizeChart(true)}
+              className="cursor-pointer mobile-touch text-main-cl underline text-sm font-medium hover:text-secondary-cl"
+            >
+              Bảng size
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {availableSizesForColor.length > 0 ? (
+              availableSizesForColor.map((variant) => {
+                const isSelected = selectedSize === variant.size
+                const isOutOfStock = variant.stock === 0
+                return (
+                  <button
+                    key={variant.id}
+                    onClick={() => !isOutOfStock && handlePickSize(selectedColor, variant.size)}
+                    disabled={isOutOfStock}
+                    className={`px-5 py-1 font-bold rounded-lg transition-all mobile-touch ${
+                      isOutOfStock
+                        ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed line-through'
+                        : isSelected
+                        ? 'bg-main-cl border-2 border-main-cl text-white shadow-md'
+                        : 'bg-white border-2 border-gray-300 text-slate-700 hover:border-secondary-cl hover:text-secondary-cl'
+                    }`}
+                  >
+                    {variant.size}
+                  </button>
+                )
+              })
+            ) : (
+              <p className="text-sm text-gray-500 italic">Vui lòng chọn màu sắc</p>
+            )}
+          </div>
         </div>
       </div>
 

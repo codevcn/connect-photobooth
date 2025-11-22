@@ -191,7 +191,7 @@ export const TextElement = ({
         >
           <button
             ref={rotateButtonRef}
-            className="cursor-grab active:cursor-grabbing bg-pink-cl text-white rounded-full p-1 active:scale-90 transition"
+            className="cursor-grab active:cursor-grabbing bg-main-cl text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -216,7 +216,7 @@ export const TextElement = ({
           <button
             ref={zoomButtonRef}
             style={{ transform: `rotateY(180deg)` }}
-            className="cursor-grab active:cursor-grabbing bg-pink-cl text-white rounded-full p-1 active:scale-90 transition"
+            className="cursor-grab active:cursor-grabbing bg-main-cl text-white rounded-full p-1 active:scale-90 transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

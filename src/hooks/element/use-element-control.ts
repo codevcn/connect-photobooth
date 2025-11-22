@@ -126,11 +126,11 @@ export const useElementControl = (
   }
 
   const onElementLayersChange = () => {
-    setZindex(
-      (elementLayers.findIndex((layer) => layer.elementId === elementId) + 1) *
-        getInitialContants<number>('ELEMENT_ZINDEX_STEP') +
-        1
-    )
+    // setZindex(
+    //   (elementLayers.findIndex((layer) => layer.elementId === elementId) + 1) *
+    //     getInitialContants<number>('ELEMENT_ZINDEX_STEP') +
+    //     1
+    // )
   }
 
   useEffect(() => {

@@ -1,17 +1,7 @@
-import { useGlobalContext } from '@/context/global-context'
+import { useGlobalContext } from '@/contexts/global-context'
 import { getInitialContants } from '@/utils/contants'
-import { EInternalEvents } from '@/utils/enums'
-import { eventEmitter } from '@/utils/events'
+import { EInternalEvents, eventEmitter } from '@/utils/events'
 import { TElementType, TStickerVisualState } from '@/utils/types/global'
-import {
-  RefreshCw,
-  Move,
-  Check,
-  Fullscreen,
-  // ChevronDown, ChevronUp,
-  Layers2,
-  X,
-} from 'lucide-react'
 import { useEffect, useRef } from 'react'
 
 type TPropertyType = 'scale' | 'angle' | 'posXY' | 'zindex-up' | 'zindex-down'
@@ -167,19 +157,49 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
       <div className="absolute top-1/2 -translate-y-1/2 left-1 flex items-center z-30">
         <button
           onClick={onClose}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
-          <X size={20} className="text-white" strokeWidth={3} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-x-icon lucide-x"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
         </button>
       </div>
 
       <div
         ref={menuRef}
-        className="NAME-menu-section STYLE-hide-scrollbar relative px-[40px] overflow-x-auto max-w-full flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
+        className="NAME-menu-section STYLE-hide-scrollbar relative px-10 overflow-x-auto max-w-full flex flex-nowrap items-stretch justify-start md:justify-center gap-y-1 gap-x-1 py-1 rounded-md border border-gray-400/30 border-solid"
       >
-        <div className="NAME-form-group NAME-form-scale flex items-center bg-pink-cl rounded px-1 py-0.5 shadow w-full">
+        <div className="NAME-form-group NAME-form-scale flex items-center bg-main-cl rounded px-1 py-0.5 shadow w-full">
           <div className="min-w-[22px]">
-            <Fullscreen size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-maximize-icon lucide-maximize text-white"
+            >
+              <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+              <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+              <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+              <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+            </svg>
           </div>
           <div className="flex gap-1 items-center mx-1 grow">
             <input
@@ -191,9 +211,25 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
             <span className="text-white text-base font-bold">%</span>
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-angle flex items-center bg-pink-cl rounded px-1 py-0.5 shadow w-full">
+        <div className="NAME-form-group NAME-form-angle flex items-center bg-main-cl rounded px-1 py-0.5 shadow w-full">
           <div className="min-w-[22px]">
-            <RefreshCw size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-refresh-ccw-icon lucide-refresh-ccw"
+            >
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+              <path d="M16 16h5v5" />
+            </svg>
           </div>
           <div className="flex gap-1 items-center mx-1 grow">
             <input
@@ -205,14 +241,28 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
             <span className="text-white text-base font-bold">độ</span>
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-zindex flex items-center justify-between bg-pink-cl rounded px-1 py-0.5 shadow w-full">
+        <div className="NAME-form-group NAME-form-zindex flex items-center justify-between bg-main-cl rounded px-1 py-0.5 shadow w-full">
           <div className="min-w-[22px]">
-            <Layers2 size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-layers2-icon lucide-layers-2"
+            >
+              <path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74z" />
+              <path d="m20 14.285 1.5.845a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74l1.5-.845" />
+            </svg>
           </div>
           <div className="flex gap-1 grow flex-wrap">
             <button
               onClick={() => onClickButton('zindex-up')}
-              className="bg-white border-2 grow text-pink-cl border-pink-cl rounded px-1.5 py-0.5 flex gap-0.5 items-center justify-center"
+              className="bg-white border-2 grow text-main-cl border-main-cl rounded px-1.5 py-0.5 flex gap-0.5 items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -232,7 +282,7 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
             </button>
             <button
               onClick={() => onClickButton('zindex-down')}
-              className="bg-white border-2 grow text-pink-cl border-pink-cl rounded px-1.5 py-0.5 flex gap-0.5 items-center justify-center"
+              className="bg-white border-2 grow text-main-cl border-main-cl rounded px-1.5 py-0.5 flex gap-0.5 items-center justify-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -252,9 +302,27 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
             </button>
           </div>
         </div>
-        <div className="NAME-form-group NAME-form-position flex items-center bg-pink-cl rounded px-1 py-0.5 shadow w-full">
+        <div className="NAME-form-group NAME-form-position flex items-center bg-main-cl rounded px-1 py-0.5 shadow w-full">
           <div className="min-w-[22px]">
-            <Move size={20} className="text-white" strokeWidth={3} />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-move-icon lucide-move"
+            >
+              <path d="M12 2v20" />
+              <path d="m15 19-3 3-3-3" />
+              <path d="m19 9 3 3-3 3" />
+              <path d="M2 12h20" />
+              <path d="m5 9-3 3 3 3" />
+              <path d="m9 5 3-3 3 3" />
+            </svg>
           </div>
           <div className="flex gap-1 mx-1">
             <input
@@ -276,9 +344,22 @@ export const StickerElementMenu = ({ elementId, onClose }: Sticker) => {
       <div className="z-20 absolute top-1/2 -translate-y-1/2 right-1 flex items-center">
         <button
           onClick={handleClickCheck}
-          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white outline font-bold bg-pink-cl gap-1 text-white active:scale-90 transition rounded p-1"
+          className="group flex flex-nowrap items-center justify-center shadow-md outline-2 outline-white font-bold bg-main-cl gap-1 text-white active:scale-90 transition rounded p-1"
         >
-          <Check size={20} className="text-white" strokeWidth={3} />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="lucide lucide-check-icon lucide-check"
+          >
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
         </button>
       </div>
     </>
